@@ -12,6 +12,7 @@ from jose import JWTError, jwt
 from passlib.context import CryptContext
 from starlette.middleware.cors import CORSMiddleware
 import httpx
+import os
 
 from database import get_db
 from schemas import (
@@ -29,9 +30,15 @@ from schemas import (
 
 app = FastAPI()
 
+# Получаем CORS origins из переменной окружения
+CORS_ORIGINS = os.getenv(
+    "CORS_ORIGINS",
+    "http://localhost:5173"
+).split(",")
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:5173"],  # Vue dev server
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -41,9 +48,9 @@ app.add_middleware(
 # JWT для администратора
 # -------------------------------------------------
 
-SECRET_KEY = "jnUubi5NNKDkRd2neldQRikDcOeQ5MagGnRvsxki7sQ"
+SECRET_KEY = os.getenv("SECRET_KEY", "jnUubi5NNKDkRd2neldQRikDcOeQ5MagGnRvsxki7sQ")
 ALGORITHM = "HS256"
-ACCESS_TOKEN_EXPIRE_MINUTES = 60
+ACCESS_TOKEN_EXPIRE_MINUTES = int(os.getenv("ACCESS_TOKEN_EXPIRE_MINUTES", "60"))
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="/admin/login")
@@ -212,7 +219,7 @@ async def change_login(
     return resp.json()
 
 
-RESET_CODE = "1111"
+RESET_CODE = os.getenv("RESET_CODE", "1111")
 
 
 @app.post("/user/reset-password", response_model=UserOut)
@@ -486,6 +493,7 @@ async def admin_delete_user(
     resp.raise_for_status()
     background_tasks.add_task(db_client.aclose)
     return {"detail": "User deleted"}
+
 
 @app.get("/health")
 async def health():
