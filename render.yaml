@@ -2,7 +2,7 @@ services:
   - type: web
     name: fiszki-pycharm_vue
     runtime: python
-    plan: starter        # можешь поставить free на тест
+    plan: free        # можешь поставить free на тест
     region: frankfurt
     autoDeploy: true
     buildCommand: pip install -r requirements.txt
