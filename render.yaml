@@ -1,8 +1,8 @@
 services:
   - type: web
-    name: fiszki-pycharm_vue
+    name: fiszki-pycharm-vue
     runtime: python
-    plan: free        # можешь поставить free на тест
+    plan: free
     region: frankfurt
     autoDeploy: true
     buildCommand: pip install -r requirements.txt
@@ -10,7 +10,7 @@ services:
     healthCheckPath: /health
     envVars:
       - key: DB_SERVICE_URL
-        value: "https://fiszki-db-service.onrender.com"  # URL второго сервиса
+        value: "https://db-service-v06e.onrender.com"
       - key: SECRET_KEY
         generateValue: true
       - key: ACCESS_TOKEN_EXPIRE_MINUTES
