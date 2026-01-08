@@ -1,0 +1,21 @@
+services:
+  - type: web
+    name: fiszki-pycharm_vue
+    runtime: python
+    plan: starter        # можешь поставить free на тест
+    region: frankfurt
+    autoDeploy: true
+    buildCommand: pip install -r requirements.txt
+    startCommand: uvicorn main:app --host 0.0.0.0 --port $PORT
+    healthCheckPath: /health
+    envVars:
+      - key: DB_SERVICE_URL
+        value: "https://fiszki-db-service.onrender.com"  # URL второго сервиса
+      - key: SECRET_KEY
+        generateValue: true
+      - key: ACCESS_TOKEN_EXPIRE_MINUTES
+        value: "60"
+      - key: CORS_ORIGINS
+        value: "https://fiszkiadminpanelfrontend.vercel.app,http://localhost:5173"
+      - key: ENVIRONMENT
+        value: production
