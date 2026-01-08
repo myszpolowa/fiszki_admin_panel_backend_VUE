@@ -31,10 +31,8 @@ from schemas import (
 app = FastAPI()
 
 # Получаем CORS origins из переменной окружения
-CORS_ORIGINS = os.getenv(
-    "CORS_ORIGINS",
-    "http://localhost:5173"
-).split(",")
+CORS_ORIGINS_STR = os.getenv("CORS_ORIGINS", "http://localhost:5173")
+CORS_ORIGINS = [origin.strip() for origin in CORS_ORIGINS_STR.split(",")]
 
 app.add_middleware(
     CORSMiddleware,
@@ -89,6 +87,17 @@ async def get_current_admin(
         raise credentials_exception
 
     return {"id_admin": int(admin_id), "role": role}
+
+# -------------------------------------------------
+# Health check с отладкой CORS
+# -------------------------------------------------
+@app.get("/health")
+async def health():
+    return {
+        "status": "ok",
+        "cors_origins": CORS_ORIGINS,
+        "cors_env": CORS_ORIGINS_STR
+    }
 
 # -------------------------------------------------
 # Публичные эндпоинты для телефона / Vue
@@ -495,6 +504,3 @@ async def admin_delete_user(
     return {"detail": "User deleted"}
 
 
-@app.get("/health")
-async def health():
-    return {"status": "ok"}
