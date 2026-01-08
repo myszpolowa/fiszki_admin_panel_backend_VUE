@@ -486,3 +486,7 @@ async def admin_delete_user(
     resp.raise_for_status()
     background_tasks.add_task(db_client.aclose)
     return {"detail": "User deleted"}
+
+@app.get("/health")
+async def health():
+    return {"status": "ok"}
