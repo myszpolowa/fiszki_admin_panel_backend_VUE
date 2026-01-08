@@ -10,7 +10,7 @@ from fastapi.staticfiles import StaticFiles
 
 from jose import JWTError, jwt
 from passlib.context import CryptContext
-from starlette.middleware.cors import CORSMiddleware
+from fastapi.middleware.cors import CORSMiddleware
 import httpx
 import os
 
@@ -30,9 +30,14 @@ from schemas import (
 
 app = FastAPI()
 
-# Получаем CORS origins из переменной окружения
-CORS_ORIGINS_STR = os.getenv("CORS_ORIGINS", "http://localhost:5173")
-CORS_ORIGINS = [origin.strip() for origin in CORS_ORIGINS_STR.split(",")]
+CORS_ORIGINS = os.getenv("CORS_ORIGINS", "http://localhost:5173").split(",")
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=[origin.strip() for origin in CORS_ORIGINS], 
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 app.add_middleware(
     CORSMiddleware,
