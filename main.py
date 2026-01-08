@@ -101,7 +101,7 @@ async def health():
     return {
         "status": "ok",
         "cors_origins": CORS_ORIGINS,
-        "cors_env": CORS_ORIGINS_STR
+        "cors_env": ', '.join(CORS_ORIGINS)
     }
 
 # -------------------------------------------------
