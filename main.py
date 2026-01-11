@@ -28,6 +28,8 @@ from schemas import (
 # Приложение и CORS
 # -------------------------------------------------
 
+app = FastAPI()
+
 @app.options("/admin/login")
 async def options_admin_login():
     return Response(status_code=200)
@@ -39,10 +41,7 @@ async def options_admin():
 @app.options("/{path:path}")  # Любые остальные
 async def options_catchall():
     return Response(status_code=200)
-
-
-app = FastAPI()
-
+    
 app.add_middleware(
     CORSMiddleware,
     allow_origins=[
