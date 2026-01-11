@@ -30,19 +30,17 @@ from schemas import (
 
 app = FastAPI()
 
-CORS_ORIGINS = [
-    "http://localhost:5173",
-    "http://127.0.0.1:5173",
-    "https://fiszkiadminpanelfrontend.vercel.app",  
-    "*"
-]
-
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=CORS_ORIGINS,
+    allow_origins=[
+        "https://fiszkiadminpanelfrontend.vercel.app",  
+        "https://fiszkiadminpanelfrontend.vercel.app/*",
+        "*"
+    ],
     allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"], )
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["*"],
+)
 
 
 # -------------------------------------------------
@@ -98,8 +96,6 @@ async def get_current_admin(
 async def health():
     return {
         "status": "ok",
-        "cors_origins": CORS_ORIGINS,
-        "cors_env": ', '.join(CORS_ORIGINS)
     }
 
 # -------------------------------------------------
