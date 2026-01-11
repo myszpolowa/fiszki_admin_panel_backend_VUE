@@ -29,32 +29,14 @@ from schemas import (
 # -------------------------------------------------
 
 app = FastAPI()
-
-@app.options("/admin/login")
-async def options_admin_login():
-    return Response(status_code=200)
-
-@app.options("/admin/{path:path}")  # Все /admin/*
-async def options_admin():
-    return Response(status_code=200)
-
-@app.options("/{path:path}")  # Любые остальные
-async def options_catchall():
-    return Response(status_code=200)
     
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "https://fiszkiadminpanelfrontend.vercel.app",  
-        "https://fiszkiadminpanelfrontend.vercel.app/*",
-        "*"
-    ],
+    allow_origins=["https://fiszkiadminpanelfrontend.vercel.app"],
     allow_credentials=True,
-    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_methods=["*"],
     allow_headers=["*"],
 )
-
-app.add_api_route("/admin/login", options_admin_login, methods=["OPTIONS"])
 
 
 # -------------------------------------------------
@@ -272,10 +254,7 @@ async def admin_login(
     resp = await db_client.post(
         "/admin/login",
         data={"username": form_data.username, "password": form_data.password},
-        headers={"Content-Type": "application/x-www-form-urlencoded",
-        "Access-Control-Allow-Origin": "https://fiszkiadminpanelfrontend.vercel.app",  
-        "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "*",}
+        headers={"Content-Type": "application/x-www-form-urlencoded"}
     )
 
     if resp.status_code != 200:
