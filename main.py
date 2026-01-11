@@ -258,8 +258,7 @@ async def admin_login(
     resp = await db_client.post(
         "/admin/login",
         data={"username": form_data.username, "password": form_data.password},
-        headers={"Content-Type": "application/x-www-form-urlencoded"},
-        "Content-Type": "application/x-www-form-urlencoded",
+        headers={"Content-Type": "application/x-www-form-urlencoded",
         "Access-Control-Allow-Origin": "https://fiszkiadminpanelfrontend.vercel.app",  
         "Access-Control-Allow-Methods": "POST, OPTIONS",
         "Access-Control-Allow-Headers": "*",
