@@ -261,7 +261,7 @@ async def admin_login(
         headers={"Content-Type": "application/x-www-form-urlencoded",
         "Access-Control-Allow-Origin": "https://fiszkiadminpanelfrontend.vercel.app",  
         "Access-Control-Allow-Methods": "POST, OPTIONS",
-        "Access-Control-Allow-Headers": "*",
+        "Access-Control-Allow-Headers": "*",}
     )
 
     if resp.status_code != 200:
