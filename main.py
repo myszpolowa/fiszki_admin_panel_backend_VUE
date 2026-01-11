@@ -30,18 +30,19 @@ from schemas import (
 
 app = FastAPI()
 
+CORS_ORIGINS = [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://fiszkiadminpanelfrontend.vercel.app",  
+    "*"
+]
+
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=[
-        "*",
-        "fiszkiadminpanelfrontend.vercel.app"
-    ],
+    allow_origins=CORS_ORIGINS,
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
-)
-
-
 
 
 # -------------------------------------------------
